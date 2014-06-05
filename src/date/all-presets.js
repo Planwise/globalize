@@ -1,5 +1,5 @@
 define([
-	"../common/format-message"
+	"../common/format-message",
 	"../util/object/values"
 ], function( formatMessage, objectValues ) {
 
@@ -14,16 +14,16 @@ return function( cldr ) {
 	var result = [];
 
 	// Skeleton
-	result = objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats/availableFormats" ) );
+	result = objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats/availableFormats", { throw: true } ) );
 
 	// Time
-	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/timeFormats" ) ) );
+	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/timeFormats", { throw: true } ) ) );
 
 	// Date
-	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateFormats" ) ) );
+	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateFormats", { throw: true } ) ) );
 
 	// Datetime
-	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats" ) ).map(function( datetimeFormat, key ) {
+	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats", { throw: true } ) ).map(function( datetimeFormat, key ) {
 		if ( typeof datetimeFormat !== "string" ) {
 			return datetimeFormat;
 		}
@@ -31,11 +31,11 @@ return function( cldr ) {
 			cldr.main([
 				"dates/calendars/gregorian/timeFormats",
 				key
-			]),
-			cldr.main([
+			], { throw: true } ),
+			cldr.main( [
 				"dates/calendars/gregorian/dateFormats",
 				key
-			])
+			], { throw: true } )
 		]);
 	}));
 

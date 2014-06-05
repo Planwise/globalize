@@ -4,9 +4,8 @@ define([
 	"./common/validate/presence",
 	"./common/validate/type",
 	"./common/validate/type/plain-object",
-	"./util/array/is-array",
 	"./util/always-array"
-], function( Cldr, Globalize, validatePresence, validateType, validateTypePlainObject, arrayIsArray, alwaysArray ) {
+], function( Cldr, Globalize, validatePresence, validateType, validateTypePlainObject, alwaysArray ) {
 
 /**
  * .loadTranslations( json )
@@ -36,11 +35,11 @@ Globalize.loadTranslations = function( json ) {
 Globalize.translate =
 Globalize.prototype.translate = function( path ) {
 	validatePresence( path, "path" );
-	validateType( path, "path", typeof path === "string" || arrayIsArray( path ), "a String nor an Array");
+	validateType( path, "path", typeof path === "string" || Array.isArray( path ), "a String nor an Array");
 
 	path = alwaysArray( path );
 
-	return this.cldr.get( [ "globalize-translations/{languageId}" ].concat( path ) );
+	return this.cldr.get( [ "globalize-translations/{languageId}" ].concat( path ), { throw: true } );
 };
 
 return Globalize;

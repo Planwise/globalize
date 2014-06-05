@@ -36,7 +36,7 @@ return function( pattern, cldr ) {
 			result = cldr.main([
 				"dates/calendars/gregorian/dateTimeFormats/availableFormats",
 				pattern.skeleton
-			]);
+			], { throw: true } );
 			break;
 
 		case "date" in pattern:
@@ -45,24 +45,24 @@ return function( pattern, cldr ) {
 				"dates/calendars/gregorian",
 				"date" in pattern ? "dateFormats" : "timeFormats",
 				( pattern.date || pattern.time )
-			]);
+			], { throw: true } );
 			break;
 
 		case "datetime" in pattern:
 			result = cldr.main([
 				"dates/calendars/gregorian/dateTimeFormats",
 				pattern.datetime
-			]);
+			], { throw: true } );
 			if ( result ) {
 				result = formatMessage( result, [
 					cldr.main([
 						"dates/calendars/gregorian/timeFormats",
 						pattern.datetime
-					]),
+					], { throw: true } ),
 					cldr.main([
 						"dates/calendars/gregorian/dateFormats",
 						pattern.datetime
-					])
+					], { throw: true } )
 				]);
 			}
 			break;

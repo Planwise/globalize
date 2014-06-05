@@ -33,7 +33,7 @@ return function( date, pattern, cldr ) {
 		if ( chr === "j" ) {
 			// Locale preferred hHKk.
 			// http://www.unicode.org/reports/tr35/tr35-dates.html#Time_Data
-			chr = cldr.supplemental.timeData.preferred();
+			chr = cldr.supplemental.timeData.preferred({ throw: true });
 		}
 
 		switch ( chr ) {
@@ -44,7 +44,7 @@ return function( date, pattern, cldr ) {
 					"dates/calendars/gregorian/eras",
 					length <= 3 ? "eraAbbr" : ( length === 4 ? "eraNames" : "eraNarrow" ),
 					date.getFullYear() < 0 ? 0 : 1
-				]);
+				], { throw: true } );
 				break;
 
 			// Year
@@ -63,7 +63,7 @@ return function( date, pattern, cldr ) {
 				// The length specifies the padding, but for two letters it also specifies the maximum length.
 				// yearInWeekofYear = date + DaysInAWeek - (dayOfWeek - firstDay) - minDays
 				ret = new Date( date.getTime() );
-				ret.setDate( ret.getDate() + 7 - ( dateDayOfWeek( date, cldr ) - dateFirstDayOfWeek( cldr ) ) - cldr.supplemental.weekData.minDays() );
+				ret.setDate( ret.getDate() + 7 - ( dateDayOfWeek( date, cldr ) - dateFirstDayOfWeek( cldr ) ) - cldr.supplemental.weekData.minDays({ throw: true }) );
 				ret = String( ret.getFullYear() );
 				pad = true;
 				if ( length === 2 ) {
@@ -88,7 +88,7 @@ return function( date, pattern, cldr ) {
 						chr === "Q" ? "format" : "stand-alone",
 						widths[ length - 3 ],
 						ret
-					]);
+					], { throw: true } );
 				}
 				break;
 
@@ -104,7 +104,7 @@ return function( date, pattern, cldr ) {
 						chr === "M" ? "format" : "stand-alone",
 						widths[ length - 3 ],
 						ret
-					]);
+					], { throw: true } );
 				}
 				break;
 
@@ -114,7 +114,7 @@ return function( date, pattern, cldr ) {
 				// woy = ceil( ( doy + dow of 1/1 ) / 7 ) - minDaysStuff ? 1 : 0.
 				// TODO should pad on ww? Not documented, but I guess so.
 				ret = dateDayOfWeek( dateStartOf( date, "year" ), cldr );
-				ret = Math.ceil( ( dateDayOfYear( date ) + ret ) / 7 ) - ( 7 - ret >= cldr.supplemental.weekData.minDays() ? 0 : 1 );
+				ret = Math.ceil( ( dateDayOfYear( date ) + ret ) / 7 ) - ( 7 - ret >= cldr.supplemental.weekData.minDays({ throw: true }) ? 0 : 1 );
 				pad = true;
 				break;
 
@@ -122,7 +122,7 @@ return function( date, pattern, cldr ) {
 				// Week of Month.
 				// wom = ceil( ( dom + dow of `1/month` ) / 7 ) - minDaysStuff ? 1 : 0.
 				ret = dateDayOfWeek( dateStartOf( date, "month" ), cldr );
-				ret = Math.ceil( ( date.getDate() + ret ) / 7 ) - ( 7 - ret >= cldr.supplemental.weekData.minDays() ? 0 : 1 );
+				ret = Math.ceil( ( date.getDate() + ret ) / 7 ) - ( 7 - ret >= cldr.supplemental.weekData.minDays({ throw: true }) ? 0 : 1 );
 				break;
 
 			// Day
@@ -173,14 +173,14 @@ return function( date, pattern, cldr ) {
 							chr === "c" ? "stand-alone" : "format",
 							"abbreviated",
 							ret
-						]);
+						], { throw: true } );
 				} else {
 					ret = cldr.main([
 						"dates/calendars/gregorian/days",
 						chr === "c" ? "stand-alone" : "format",
 						widths[ length < 3 ? 0 : length - 3 ],
 						ret
-					]);
+					], { throw: true } );
 				}
 				break;
 
@@ -189,7 +189,7 @@ return function( date, pattern, cldr ) {
 				ret = cldr.main([
 					"dates/calendars/gregorian/dayPeriods/format/wide",
 					date.getHours() < 12 ? "am" : "pm"
-				]);
+				], { throw: true } );
 				break;
 
 			// Hour
