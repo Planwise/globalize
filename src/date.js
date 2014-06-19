@@ -1,6 +1,7 @@
 define([
 	"cldr",
 	"./common/validate/cldr",
+	"./common/validate/default-locale",
 	"./common/validate/presence",
 	"./common/validate/type",
 	"./common/validate/type/date",
@@ -13,7 +14,7 @@ define([
 	"./date/parse",
 	"./util/always-array",
 	"cldr/supplemental"
-], function( Cldr, validateCldr, validatePresence, validateTypeDataType, validateTypeDate, validateTypeDatePattern, validateTypeString, Globalize, dateAllPresets, dateExpandPattern, dateFormat, dateParse, alwaysArray ) {
+], function( Cldr, validateCldr, validateDefaultLocale, validatePresence, validateTypeDataType, validateTypeDate, validateTypeDatePattern, validateTypeString, Globalize, dateAllPresets, dateExpandPattern, dateFormat, dateParse, alwaysArray ) {
 
 /**
  * .formatDate( value, pattern )
@@ -34,6 +35,8 @@ Globalize.prototype.formatDate = function( value, pattern ) {
 	validateTypeDatePattern( pattern, "pattern" );
 
 	cldr = this.cldr;
+
+	validateDefaultLocale( cldr );
 
 	try {
 		pattern = dateExpandPattern( pattern, cldr );
@@ -60,6 +63,8 @@ Globalize.prototype.parseDate = function( value, patterns ) {
 	validateTypeString( value, "value" );
 
 	cldr = this.cldr;
+
+	validateDefaultLocale( cldr );
 
 	try {
 		if ( !patterns ) {

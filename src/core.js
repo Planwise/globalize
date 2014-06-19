@@ -3,13 +3,14 @@ define([
 	"./common/create-error",
 	"./common/format-message",
 	"./common/validate/cldr",
+	"./common/validate/default-locale",
 	"./common/validate/presence",
 	"./common/validate/type",
 	"./common/validate/type/locale",
 	"./common/validate/type/plain-object",
 	"./util/always-cldr",
 	"./util/is-plain-object"
-], function( Cldr, createError, formatMessage, validateCldr, validatePresence, validateType, validateTypeLocale, validateTypePlainObject, alwaysCldr, isPlainObject ) {
+], function( Cldr, createError, formatMessage, validateCldr, validateDefaultLocale, validatePresence, validateType, validateTypeLocale, validateTypePlainObject, alwaysCldr, isPlainObject ) {
 
 function validateLikelySubtags( cldr ) {
 	try {
@@ -84,6 +85,7 @@ Globalize._createError = createError;
 Globalize._formatMessage = formatMessage;
 Globalize._isPlainObject = isPlainObject;
 Globalize._validateCldr = validateCldr;
+Globalize._validateDefaultLocale = validateDefaultLocale;
 Globalize._validatePresence = validatePresence;
 Globalize._validateTypePlainObject = validateTypePlainObject;
 Globalize._validateType = validateType;

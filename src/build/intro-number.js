@@ -31,6 +31,7 @@
 }(this, function( Cldr, Globalize ) {
 
 var validateCldr = Globalize._validateCldr,
+	validateDefaultLocale = Globalize._validateDefaultLocale,
 	validatePresence = Globalize._validatePresence,
 	validateType = Globalize._validateType,
 	validateTypePlainObject = Globalize._validateTypePlainObject;
