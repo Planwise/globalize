@@ -59,7 +59,7 @@ return function( value, pattern, cldr ) {
 		// Return the first found one (and set token accordingly), or null.
 		function lookup( path ) {
 			var i, re,
-				data = cldr.main( path, { throw: true } );
+				data = cldr.main( path );
 			for ( i in data ) {
 				re = new RegExp( "^" + data[ i ] );
 				if ( re.test( value ) ) {

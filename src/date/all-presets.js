@@ -14,16 +14,16 @@ return function( cldr ) {
 	var result = [];
 
 	// Skeleton
-	result = objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats/availableFormats", { throw: true } ) );
+	result = objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats/availableFormats" ) );
 
 	// Time
-	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/timeFormats", { throw: true } ) ) );
+	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/timeFormats" ) ) );
 
 	// Date
-	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateFormats", { throw: true } ) ) );
+	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateFormats" ) ) );
 
 	// Datetime
-	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats", { throw: true } ) ).map(function( datetimeFormat, key ) {
+	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats" ) ).map(function( datetimeFormat, key ) {
 		if ( typeof datetimeFormat !== "string" ) {
 			return datetimeFormat;
 		}
@@ -31,11 +31,11 @@ return function( cldr ) {
 			cldr.main([
 				"dates/calendars/gregorian/timeFormats",
 				key
-			], { throw: true } ),
-			cldr.main( [
+			]),
+			cldr.main([
 				"dates/calendars/gregorian/dateFormats",
 				key
-			], { throw: true } )
+			])
 		]);
 	}));
 

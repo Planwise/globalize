@@ -13,11 +13,7 @@ define([
 ], function( Cldr, createError, formatMessage, validateCldr, validateDefaultLocale, validatePresence, validateType, validateTypeLocale, validateTypePlainObject, alwaysCldr, isPlainObject ) {
 
 function validateLikelySubtags( cldr ) {
-	try {
-		cldr.get( "supplemental/likelySubtags", { throw: true });
-	} catch( error ) {
-		throw validateCldr( error );
-	}
+	validateCldr( cldr, "get", "supplemental/likelySubtags", "supplemental/likelySubtags.json" );
 }
 
 /**

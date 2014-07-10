@@ -1,5 +1,5 @@
 define([
-	"./numbering-system",
+	"./numbering-system"
 ], function( numberNumberingSystem ) {
 
 /**
@@ -15,7 +15,7 @@ return function( name, cldr ) {
 	return cldr.main([
 		"numbers/symbols-numberSystem-" + numberNumberingSystem( cldr ),
 		name
-	], { throw: true } );
+	]);
 };
 
 });

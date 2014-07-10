@@ -37,13 +37,10 @@ Globalize.prototype.formatDate = function( value, pattern ) {
 	cldr = this.cldr;
 
 	validateDefaultLocale( cldr );
+	validateCldr( cldr, "main", "dates/calendars/gregorian", "main/{languageId}/ca-gregorian.json" );
 
-	try {
-		pattern = dateExpandPattern( pattern, cldr );
-		return dateFormat( value, pattern, cldr );
-	} catch( error ) {
-		throw validateCldr( error );
-	}
+	pattern = dateExpandPattern( pattern, cldr );
+	return dateFormat( value, pattern, cldr );
 };
 
 /**
@@ -65,25 +62,24 @@ Globalize.prototype.parseDate = function( value, patterns ) {
 	cldr = this.cldr;
 
 	validateDefaultLocale( cldr );
+	validateCldr( cldr, "main", "dates/calendars/gregorian", "main/{languageId}/ca-gregorian.json" );
+	validateCldr( cldr, "supplemental", "supplemental/timeData", "supplemental/timeData.json" );
+	validateCldr( cldr, "supplemental", "supplemental/weekData", "supplemental/weekData.json" );
 
-	try {
-		if ( !patterns ) {
-			patterns = dateAllPresets( cldr );
-		} else {
-			patterns = alwaysArray( patterns );
-		}
-
-		patterns.some(function( pattern ) {
-			validateTypeDatePattern( pattern, "patterns" );
-			pattern = dateExpandPattern( pattern, cldr );
-			date = dateParse( value, pattern, cldr );
-			return !!date;
-		});
-
-		return date || null;
-	} catch( error ) {
-		throw validateCldr( error );
+	if ( !patterns ) {
+		patterns = dateAllPresets( cldr );
+	} else {
+		patterns = alwaysArray( patterns );
 	}
+
+	patterns.some(function( pattern ) {
+		validateTypeDatePattern( pattern, "patterns" );
+		pattern = dateExpandPattern( pattern, cldr );
+		date = dateParse( value, pattern, cldr );
+		return !!date;
+	});
+
+	return date || null;
 };
 
 return Globalize;

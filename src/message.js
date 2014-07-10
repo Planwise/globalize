@@ -45,7 +45,7 @@ Globalize.prototype.translate = function( path ) {
 
 	validateDefaultLocale( cldr );
 
-	return cldr.get( [ "globalize-translations/{languageId}" ].concat( path ), { throw: true } );
+	return cldr.get( [ "globalize-translations/{languageId}" ].concat( path ) );
 };
 
 return Globalize;
