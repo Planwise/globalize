@@ -8,12 +8,15 @@ define([
 	"./common/validate/type",
 	"./common/validate/type/locale",
 	"./common/validate/type/plain-object",
+	"./util/always-array",
 	"./util/always-cldr",
-	"./util/is-plain-object"
-], function( Cldr, createError, formatMessage, validateCldr, validateDefaultLocale, validatePresence, validateType, validateTypeLocale, validateTypePlainObject, alwaysCldr, isPlainObject ) {
+	"./util/is-plain-object",
+	"cldr/event"
+], function( Cldr, createError, formatMessage, validateCldr, validateDefaultLocale, validatePresence, validateType, validateTypeLocale, validateTypePlainObject, alwaysArray, alwaysCldr, isPlainObject ) {
 
 function validateLikelySubtags( cldr ) {
-	validateCldr( cldr, "get", "supplemental/likelySubtags", "supplemental/likelySubtags.json" );
+	cldr.once( "get", validateCldr );
+	cldr.get( "supplemental/likelySubtags" );
 }
 
 /**
@@ -77,6 +80,7 @@ Globalize.locale = function( locale ) {
 /**
  * Optimization to avoid duplicating some internal functions across modules.
  */
+Globalize._alwaysArray = alwaysArray;
 Globalize._createError = createError;
 Globalize._formatMessage = formatMessage;
 Globalize._isPlainObject = isPlainObject;

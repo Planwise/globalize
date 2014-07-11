@@ -13,8 +13,19 @@ define([
 	"./date/format",
 	"./date/parse",
 	"./util/always-array",
+	"cldr/event",
 	"cldr/supplemental"
 ], function( Cldr, validateCldr, validateDefaultLocale, validatePresence, validateTypeDataType, validateTypeDate, validateTypeDatePattern, validateTypeString, Globalize, dateAllPresets, dateExpandPattern, dateFormat, dateParse, alwaysArray ) {
+
+function validateRequiredCldr( path, value ) {
+	validateCldr( path, value, {
+		skip: [
+			/dates\/calendars\/gregorian\/days\/.*\/short/,
+			/supplemental\/timeData\/(?!001)/,
+			/supplemental\/weekData\/(?!001)/
+		]
+	});
+}
 
 /**
  * .formatDate( value, pattern )
@@ -27,7 +38,7 @@ define([
  */
 Globalize.formatDate =
 Globalize.prototype.formatDate = function( value, pattern ) {
-	var cldr;
+	var cldr, ret;
 
 	validatePresence( value, "value" );
 	validatePresence( pattern, "pattern" );
@@ -37,10 +48,13 @@ Globalize.prototype.formatDate = function( value, pattern ) {
 	cldr = this.cldr;
 
 	validateDefaultLocale( cldr );
-	validateCldr( cldr, "main", "dates/calendars/gregorian", "main/{languageId}/ca-gregorian.json" );
 
+	cldr.on( "get", validateRequiredCldr );
 	pattern = dateExpandPattern( pattern, cldr );
-	return dateFormat( value, pattern, cldr );
+	ret = dateFormat( value, pattern, cldr );
+	cldr.off( "get", validateRequiredCldr );
+
+	return ret;
 };
 
 /**
@@ -62,9 +76,8 @@ Globalize.prototype.parseDate = function( value, patterns ) {
 	cldr = this.cldr;
 
 	validateDefaultLocale( cldr );
-	validateCldr( cldr, "main", "dates/calendars/gregorian", "main/{languageId}/ca-gregorian.json" );
-	validateCldr( cldr, "supplemental", "supplemental/timeData", "supplemental/timeData.json" );
-	validateCldr( cldr, "supplemental", "supplemental/weekData", "supplemental/weekData.json" );
+
+	cldr.on( "get", validateRequiredCldr );
 
 	if ( !patterns ) {
 		patterns = dateAllPresets( cldr );
@@ -78,6 +91,8 @@ Globalize.prototype.parseDate = function( value, patterns ) {
 		date = dateParse( value, pattern, cldr );
 		return !!date;
 	});
+
+	cldr.off( "get", validateRequiredCldr );
 
 	return date || null;
 };

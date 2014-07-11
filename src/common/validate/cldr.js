@@ -1,11 +1,18 @@
 define([
-	"../format-message",
-	"../validate"
-], function( formatMessage, validate ) {
+	"../validate",
+	"../../util/always-array"
+], function( validate, alwaysArray ) {
 
-return function( cldr, method, path, file ) {
-	validate( "E_MISSING_CLDR", "Missing required CLDR content `{file}`.", typeof cldr[ method ]( path ) !== "undefined", {
-		file: formatMessage( file, cldr.attributes )
+return function( path, value, options ) {
+	var skipBoolean;
+	options = options || {};
+
+	skipBoolean = alwaysArray( options.skip ).some(function( pathRe ) {
+		return pathRe.test( path );
+	});
+
+	validate( "E_MISSING_CLDR", "Missing required CLDR content `{path}`.", value || skipBoolean, {
+		path: path
 	});
 };
 

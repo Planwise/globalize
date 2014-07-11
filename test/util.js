@@ -9,7 +9,6 @@ var allTypes = {
 	"function": Foo,
 	"null": null,
 	number: 7,
-	object: new Foo(),
 	plainObject: {},
 	string: "foo"
 };
