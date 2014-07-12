@@ -6,7 +6,7 @@ define(function() {
  * TODO support ( native | traditional | finance ).
  */
 return function( cldr ) {
-	return cldr.main( "numbers/defaultNumberingSystem" );
+	return cldr.main( "numbers/defaultNumberingSystem", { throw: true } );
 };
 
 });

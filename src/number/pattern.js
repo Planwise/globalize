@@ -18,7 +18,7 @@ return function( style, cldr ) {
 		"numbers",
 		style + "Formats-numberSystem-" + numberNumberingSystem( cldr ),
 		"standard"
-	]);
+	], { throw: true } );
 };
 
 });

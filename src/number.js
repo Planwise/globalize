@@ -34,13 +34,16 @@ Globalize.prototype.formatNumber = function( value, attributes ) {
 	cldr = this.cldr;
 
 	validateDefaultLocale( cldr );
-	validateCldr( cldr, "main", "dates/numbers", "main/{languageId}/numbers.json" );
 
-	if ( !attributes.pattern ) {
-		pattern = numberPattern( attributes.style || "decimal", cldr );
+	try {
+		if ( !attributes.pattern ) {
+			pattern = numberPattern( attributes.style || "decimal", cldr );
+		}
+
+		return numberFormat( value, pattern, cldr, attributes );
+	} catch( error ) {
+		throw validateCldr( error );
 	}
-
-	return numberFormat( value, pattern, cldr, attributes );
 };
 
 /**
@@ -60,12 +63,15 @@ Globalize.prototype.parseNumber = function( value ) {
 	cldr = this.cldr;
 
 	validateDefaultLocale( cldr );
-	validateCldr( cldr, "main", "dates/numbers", "main/{languageId}/numbers.json" );
 
-	// TODO: What about per mille? Which "style" does it belong to?
-	pattern = numberPattern( value.indexOf( "%" ) !== -1 ? "percent" : "decimal", cldr );
+	try {
+		// TODO: What about per mille? Which "style" does it belong to?
+		pattern = numberPattern( value.indexOf( "%" ) !== -1 ? "percent" : "decimal", cldr );
 
-	return numberParse( value, pattern, cldr );
+		return numberParse( value, pattern, cldr );
+	} catch( error ) {
+		throw validateCldr( error );
+	}
 };
 
 return Globalize;
