@@ -2,12 +2,13 @@ define([
 	"cldr",
 	"src/date/parse",
 	"src/date/start-of",
+	"../../util",
 	"json!fixtures/cldr/main/en/ca-gregorian.json",
 	"json!fixtures/cldr/supplemental/likelySubtags.json",
 	"json!fixtures/cldr/supplemental/timeData.json",
 	"json!fixtures/cldr/supplemental/weekData.json",
 	"cldr/supplemental"
-], function( Cldr, parse, startOf, enCaGregorian, likelySubtags, timeData, weekData ) {
+], function( Cldr, parse, startOf, util, enCaGregorian, likelySubtags, timeData, weekData ) {
 
 var cldr, date1, date2;
 
@@ -16,7 +17,7 @@ Cldr.load( likelySubtags );
 Cldr.load( timeData );
 Cldr.load( weekData );
 
-cldr = new Cldr( "en" );
+cldr = util.createCldr( "en" );
 
 QUnit.module( "Datetime Parse" );
 

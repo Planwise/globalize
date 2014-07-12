@@ -1,11 +1,12 @@
 define([
 	"cldr",
 	"src/date/tokenizer",
+	"../../util",
 	"json!fixtures/cldr/main/en/ca-gregorian.json",
 	"json!fixtures/cldr/supplemental/likelySubtags.json",
 	"json!fixtures/cldr/supplemental/timeData.json",
 	"json!fixtures/cldr/supplemental/weekData.json"
-], function( Cldr, tokenizer, enCaGregorian, likelySubtags, timeData, weekData ) {
+], function( Cldr, tokenizer, util, enCaGregorian, likelySubtags, timeData, weekData ) {
 
 var cldr;
 
@@ -14,7 +15,7 @@ Cldr.load( likelySubtags );
 Cldr.load( timeData );
 Cldr.load( weekData );
 
-cldr = new Cldr( "en" );
+cldr = util.createCldr( "en" );
 
 QUnit.module( "Datetime Tokenizer" );
 

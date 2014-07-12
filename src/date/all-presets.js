@@ -11,28 +11,29 @@ define([
  * Return an Array with all (skeleton, date, time, datetime) presets.
  */
 return function( cldr ) {
-	var result = [];
+	var requiredCldr = cldr.required,
+		result = [];
 
 	// Skeleton
-	result = objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats/availableFormats" ) );
+	result = objectValues( requiredCldr.main( "dates/calendars/gregorian/dateTimeFormats/availableFormats" ) );
 
 	// Time
-	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/timeFormats" ) ) );
+	result = result.concat( objectValues( requiredCldr.main( "dates/calendars/gregorian/timeFormats" ) ) );
 
 	// Date
-	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateFormats" ) ) );
+	result = result.concat( objectValues( requiredCldr.main( "dates/calendars/gregorian/dateFormats" ) ) );
 
 	// Datetime
-	result = result.concat( objectValues( cldr.main( "dates/calendars/gregorian/dateTimeFormats" ) ).map(function( datetimeFormat, key ) {
+	result = result.concat( objectValues( requiredCldr.main( "dates/calendars/gregorian/dateTimeFormats" ) ).map(function( datetimeFormat, key ) {
 		if ( typeof datetimeFormat !== "string" ) {
 			return datetimeFormat;
 		}
 		return formatMessage( datetimeFormat, [
-			cldr.main([
+			requiredCldr.main([
 				"dates/calendars/gregorian/timeFormats",
 				key
 			]),
-			cldr.main([
+			requiredCldr.main([
 				"dates/calendars/gregorian/dateFormats",
 				key
 			])

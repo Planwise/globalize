@@ -1,5 +1,5 @@
 define([
-	"./numbering-system"
+	"./numbering-system",
 ], function( numberNumberingSystem ) {
 
 /**
@@ -12,7 +12,7 @@ define([
  * Return the localized symbol given its name.
  */
 return function( name, cldr ) {
-	return cldr.main([
+	return cldr.required.main([
 		"numbers/symbols-numberSystem-" + numberNumberingSystem( cldr ),
 		name
 	]);

@@ -24,7 +24,8 @@ define([
  * Disclosure: this function borrows excerpts of dojo/date/locale.
  */
 return function( date, pattern, cldr ) {
-	var widths = [ "abbreviated", "wide", "narrow" ];
+	var requiredCldr = cldr.required,
+		widths = [ "abbreviated", "wide", "narrow" ];
 	return pattern.replace( datePatternRe, function( current ) {
 		var pad, ret,
 			chr = current.charAt( 0 ),
@@ -33,14 +34,14 @@ return function( date, pattern, cldr ) {
 		if ( chr === "j" ) {
 			// Locale preferred hHKk.
 			// http://www.unicode.org/reports/tr35/tr35-dates.html#Time_Data
-			chr = cldr.supplemental.timeData.preferred();
+			chr = requiredCldr.supplemental.timeData.preferred();
 		}
 
 		switch ( chr ) {
 
 			// Era
 			case "G":
-				ret = cldr.main([
+				ret = requiredCldr.main([
 					"dates/calendars/gregorian/eras",
 					length <= 3 ? "eraAbbr" : ( length === 4 ? "eraNames" : "eraNarrow" ),
 					date.getFullYear() < 0 ? 0 : 1
@@ -63,7 +64,7 @@ return function( date, pattern, cldr ) {
 				// The length specifies the padding, but for two letters it also specifies the maximum length.
 				// yearInWeekofYear = date + DaysInAWeek - (dayOfWeek - firstDay) - minDays
 				ret = new Date( date.getTime() );
-				ret.setDate( ret.getDate() + 7 - ( dateDayOfWeek( date, cldr ) - dateFirstDayOfWeek( cldr ) ) - cldr.supplemental.weekData.minDays() );
+				ret.setDate( ret.getDate() + 7 - ( dateDayOfWeek( date, cldr ) - dateFirstDayOfWeek( cldr ) ) - requiredCldr.supplemental.weekData.minDays() );
 				ret = String( ret.getFullYear() );
 				pad = true;
 				if ( length === 2 ) {
@@ -83,7 +84,7 @@ return function( date, pattern, cldr ) {
 					pad = true;
 				} else {
 					// http://unicode.org/cldr/trac/ticket/6788
-					ret = cldr.main([
+					ret = requiredCldr.main([
 						"dates/calendars/gregorian/quarters",
 						chr === "Q" ? "format" : "stand-alone",
 						widths[ length - 3 ],
@@ -99,7 +100,7 @@ return function( date, pattern, cldr ) {
 				if ( length <= 2 ) {
 					pad = true;
 				} else {
-					ret = cldr.main([
+					ret = requiredCldr.main([
 						"dates/calendars/gregorian/months",
 						chr === "M" ? "format" : "stand-alone",
 						widths[ length - 3 ],
@@ -114,7 +115,7 @@ return function( date, pattern, cldr ) {
 				// woy = ceil( ( doy + dow of 1/1 ) / 7 ) - minDaysStuff ? 1 : 0.
 				// TODO should pad on ww? Not documented, but I guess so.
 				ret = dateDayOfWeek( dateStartOf( date, "year" ), cldr );
-				ret = Math.ceil( ( dateDayOfYear( date ) + ret ) / 7 ) - ( 7 - ret >= cldr.supplemental.weekData.minDays() ? 0 : 1 );
+				ret = Math.ceil( ( dateDayOfYear( date ) + ret ) / 7 ) - ( 7 - ret >= requiredCldr.supplemental.weekData.minDays() ? 0 : 1 );
 				pad = true;
 				break;
 
@@ -122,7 +123,7 @@ return function( date, pattern, cldr ) {
 				// Week of Month.
 				// wom = ceil( ( dom + dow of `1/month` ) / 7 ) - minDaysStuff ? 1 : 0.
 				ret = dateDayOfWeek( dateStartOf( date, "month" ), cldr );
-				ret = Math.ceil( ( date.getDate() + ret ) / 7 ) - ( 7 - ret >= cldr.supplemental.weekData.minDays() ? 0 : 1 );
+				ret = Math.ceil( ( date.getDate() + ret ) / 7 ) - ( 7 - ret >= requiredCldr.supplemental.weekData.minDays() ? 0 : 1 );
 				break;
 
 			// Day
@@ -168,14 +169,14 @@ return function( date, pattern, cldr ) {
 							chr === "c" ? "stand-alone" : "format",
 							"short",
 							ret
-						]) || cldr.main([
+						]) || requiredCldr.main([
 							"dates/calendars/gregorian/days",
 							chr === "c" ? "stand-alone" : "format",
 							"abbreviated",
 							ret
 						]);
 				} else {
-					ret = cldr.main([
+					ret = requiredCldr.main([
 						"dates/calendars/gregorian/days",
 						chr === "c" ? "stand-alone" : "format",
 						widths[ length < 3 ? 0 : length - 3 ],
@@ -186,7 +187,7 @@ return function( date, pattern, cldr ) {
 
 			// Period (AM or PM)
 			case "a":
-				ret = cldr.main([
+				ret = requiredCldr.main([
 					"dates/calendars/gregorian/dayPeriods/format/wide",
 					date.getHours() < 12 ? "am" : "pm"
 				]);

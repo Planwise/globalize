@@ -1,12 +1,13 @@
 define([
 	"cldr",
 	"src/date/format",
+	"../../util",
 	"json!fixtures/cldr/main/en/ca-gregorian.json",
 	"json!fixtures/cldr/supplemental/likelySubtags.json",
 	"json!fixtures/cldr/supplemental/timeData.json",
 	"json!fixtures/cldr/supplemental/weekData.json",
 	"cldr/supplemental"
-], function( Cldr, format, enCaGregorian, likelySubtags, timeData, weekData ) {
+], function( Cldr, format, util, enCaGregorian, likelySubtags, timeData, weekData ) {
 
 var cldr,
 	year0 = new Date( -62167190400000 ),
@@ -21,7 +22,7 @@ Cldr.load( likelySubtags );
 Cldr.load( timeData );
 Cldr.load( weekData );
 
-cldr = new Cldr( "en" );
+cldr = util.createCldr( "en" );
 
 QUnit.module( "Datetime Format" );
 
@@ -336,11 +337,11 @@ QUnit.test( "should format hour (kk) using 24-hour-cycle [1-24] with padding", f
 
 QUnit.test( "should format hour (j) using preferred hour format for the locale (h, H, K, or k) with no padding", function( assert ) {
 	assert.equal( format( date2, "j", cldr ), "5" );
-	assert.equal( format( date2, "j", new Cldr( "pt-BR" ) ), "17" );
-	assert.equal( format( date2, "j", new Cldr( "de" ) ), "17" );
-	assert.equal( format( date2, "j", new Cldr( "en-IN" ) ), "5" );
-	assert.equal( format( date2, "j", new Cldr( "en-GB" ) ), "17" );
-	assert.equal( format( date2, "j", new Cldr( "ru" ) ), "17" );
+	assert.equal( format( date2, "j", util.createCldr( "pt-BR" ) ), "17" );
+	assert.equal( format( date2, "j", util.createCldr( "de" ) ), "17" );
+	assert.equal( format( date2, "j", util.createCldr( "en-IN" ) ), "5" );
+	assert.equal( format( date2, "j", util.createCldr( "en-GB" ) ), "17" );
+	assert.equal( format( date2, "j", util.createCldr( "ru" ) ), "17" );
 });
 
 QUnit.test( "should format hour (jj) using preferred hour format for the locale (h, H, K, or k) with padding", function( assert ) {

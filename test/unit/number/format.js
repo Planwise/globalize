@@ -1,11 +1,12 @@
 define([
 	"cldr",
 	"src/number/format",
+	"../../util",
 	"json!fixtures/cldr/main/ar/numbers.json",
 	"json!fixtures/cldr/main/en/numbers.json",
 	"json!fixtures/cldr/main/es/numbers.json",
 	"json!fixtures/cldr/supplemental/likelySubtags.json"
-], function( Cldr, format, arNumbers, enNumbers, esNumbers, likelySubtags ) {
+], function( Cldr, format, util, arNumbers, enNumbers, esNumbers, likelySubtags ) {
 
 // 1: Earth average diameter according to:
 // http://www.wolframalpha.com/input/?i=earth+diameter
@@ -19,9 +20,9 @@ Cldr.load( enNumbers );
 Cldr.load( esNumbers );
 Cldr.load( likelySubtags );
 
-ar = new Cldr( "ar" );
-en = new Cldr( "en" );
-es = new Cldr( "es" );
+ar = util.createCldr( "ar" );
+en = util.createCldr( "en" );
+es = util.createCldr( "es" );
 
 QUnit.module( "Number Format" );
 

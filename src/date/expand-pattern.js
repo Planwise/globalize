@@ -25,7 +25,8 @@ define([
  * - { pattern: "dd/mm" } returns "dd/mm";
  */
 return function( pattern, cldr ) {
-	var result;
+	var result,
+		requiredCldr = cldr.required;
 
 	if ( typeof pattern === "string" ) {
 		pattern = { skeleton: pattern };
@@ -33,7 +34,7 @@ return function( pattern, cldr ) {
 
 	switch ( true ) {
 		case "skeleton" in pattern:
-			result = cldr.main([
+			result = requiredCldr.main([
 				"dates/calendars/gregorian/dateTimeFormats/availableFormats",
 				pattern.skeleton
 			]);
@@ -41,7 +42,7 @@ return function( pattern, cldr ) {
 
 		case "date" in pattern:
 		case "time" in pattern:
-			result = cldr.main([
+			result = requiredCldr.main([
 				"dates/calendars/gregorian",
 				"date" in pattern ? "dateFormats" : "timeFormats",
 				( pattern.date || pattern.time )
@@ -49,17 +50,17 @@ return function( pattern, cldr ) {
 			break;
 
 		case "datetime" in pattern:
-			result = cldr.main([
+			result = requiredCldr.main([
 				"dates/calendars/gregorian/dateTimeFormats",
 				pattern.datetime
 			]);
 			if ( result ) {
 				result = formatMessage( result, [
-					cldr.main([
+					requiredCldr.main([
 						"dates/calendars/gregorian/timeFormats",
 						pattern.datetime
 					]),
-					cldr.main([
+					requiredCldr.main([
 						"dates/calendars/gregorian/dateFormats",
 						pattern.datetime
 					])

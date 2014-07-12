@@ -12,8 +12,19 @@ define([
 	"./util/is-plain-object"
 ], function( Cldr, createError, formatMessage, validateCldr, validateDefaultLocale, validatePresence, validateType, validateTypeLocale, validateTypePlainObject, alwaysCldr, isPlainObject ) {
 
+function setCldr( locale ) {
+	var cldr = alwaysCldr( locale );
+	cldr.required = new Cldr( cldr.locale, { throwOnMissing: true } );
+	validateLikelySubtags( cldr );
+	return cldr;
+}
+
 function validateLikelySubtags( cldr ) {
-	validateCldr( cldr, "get", "supplemental/likelySubtags", "supplemental/likelySubtags.json" );
+	try {
+		cldr.required.get( "supplemental/likelySubtags" );
+	} catch( error ) {
+		throw validateCldr( error );
+	}
 }
 
 /**
@@ -33,9 +44,7 @@ function Globalize( locale ) {
 	validatePresence( locale, "locale" );
 	validateTypeLocale( locale, "locale" );
 
-	this.cldr = alwaysCldr( locale );
-
-	validateLikelySubtags( this.cldr );
+	this.cldr = setCldr( locale );
 }
 
 /**
@@ -68,8 +77,7 @@ Globalize.locale = function( locale ) {
 	validateTypeLocale( locale, "locale" );
 
 	if ( arguments.length ) {
-		this.cldr = alwaysCldr( locale );
-		validateLikelySubtags( this.cldr );
+		this.cldr = setCldr( locale );
 	}
 	return this.cldr;
 };

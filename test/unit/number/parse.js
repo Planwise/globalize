@@ -1,13 +1,14 @@
 define([
 	"cldr",
 	"src/number/parse",
+	"../../util",
 	"json!fixtures/cldr/main/ar/numbers.json",
 	"json!fixtures/cldr/main/dz/numbers.json",
 	"json!fixtures/cldr/main/en/numbers.json",
 	"json!fixtures/cldr/main/es/numbers.json",
 	"json!fixtures/cldr/main/sv/numbers.json",
 	"json!fixtures/cldr/supplemental/likelySubtags.json"
-], function( Cldr, parse, arNumbers, dzNumbers, enNumbers, esNumbers, svNumbers, likelySubtags ) {
+], function( Cldr, parse, util, arNumbers, dzNumbers, enNumbers, esNumbers, svNumbers, likelySubtags ) {
 
 var ar, dz, en, es, sv;
 
@@ -18,11 +19,11 @@ Cldr.load( esNumbers );
 Cldr.load( svNumbers );
 Cldr.load( likelySubtags );
 
-ar = new Cldr( "ar" );
-dz = new Cldr( "dz" );
-en = new Cldr( "en" );
-es = new Cldr( "es" );
-sv = new Cldr( "sv" );
+ar = util.createCldr( "ar" );
+dz = util.createCldr( "dz" );
+en = util.createCldr( "en" );
+es = util.createCldr( "es" );
+sv = util.createCldr( "sv" );
 
 QUnit.module( "Number Parse" );
 

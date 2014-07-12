@@ -1,16 +1,17 @@
 define([
 	"cldr",
 	"src/date/expand-pattern",
+	"../../util",
 	"json!fixtures/cldr/main/en/ca-gregorian.json",
 	"json!fixtures/cldr/supplemental/likelySubtags.json"
-], function( Cldr, expandPattern, enCaGregorian, likelySubtags ) {
+], function( Cldr, expandPattern, util, enCaGregorian, likelySubtags ) {
 
 var cldr;
 
 Cldr.load( enCaGregorian );
 Cldr.load( likelySubtags );
 
-cldr = new Cldr( "en" );
+cldr = util.createCldr( "en" );
 
 QUnit.module( "Datetime Expand Pattern" );
 

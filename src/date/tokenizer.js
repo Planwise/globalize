@@ -30,6 +30,7 @@ define([
  */
 return function( value, pattern, cldr ) {
 	var valid,
+		requiredCldr = cldr.required,
 		tokens = [],
 		widths = [ "abbreviated", "wide", "narrow" ];
 
@@ -59,7 +60,7 @@ return function( value, pattern, cldr ) {
 		// Return the first found one (and set token accordingly), or null.
 		function lookup( path ) {
 			var i, re,
-				data = cldr.main( path );
+				data = requiredCldr.main( path );
 			for ( i in data ) {
 				re = new RegExp( "^" + data[ i ] );
 				if ( re.test( value ) ) {

@@ -14,7 +14,7 @@ return function( style, cldr ) {
 		throw new Error( "Invalid style" );
 	}
 
-	return cldr.main([
+	return cldr.required.main([
 		"numbers",
 		style + "Formats-numberSystem-" + numberNumberingSystem( cldr ),
 		"standard"
