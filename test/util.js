@@ -6,9 +6,9 @@ var allTypes = {
 	array: [],
 	cldr: new Cldr( "en" ),
 	date: new Date(),
+	"function": Foo,
 	"null": null,
 	number: 7,
-	object: function() {},
 	plainObject: {},
 	string: "foo"
 };
@@ -23,6 +23,8 @@ function assertParameterType( assert, type, name, fn ) {
 		}, "Expected \"E_INVALID_PAR_TYPE: Invalid `" + name + "` parameter type (" + type + ")\" to be thrown" );
 	});
 }
+
+function Foo() {}
 
 /**
  * not() should be used with Array.prototype.filter().
